@@ -3,7 +3,7 @@ import urllib.request
 import youtube_dl
 import json
 import re
-# from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 
 InputUrl = input("請輸入收藏清單網址：")
 vectorId = re.search(r'http\:\/\/www\.mixerbox\.com\/list\/([0-9]+)',InputUrl).group(1)

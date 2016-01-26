@@ -4,4 +4,4 @@
 網址：http://www.mixerbox.com/  </br>
 
 插件支援：</br>
-1.youtube_dl</br>
+1.youtube_dl[https://github.com/rg3/youtube-dl]</br>
