@@ -46,7 +46,6 @@ vectorId = "7742969"
 =======
 InputUrl = input("請輸入收藏清單網址：")
 vectorId = mixerbox.getvectorId(InputUrl)
->>>>>>> 2770df0877d8589e32ae71600f4c88f896f819f7
 HTML = mixerbox.getHTML(vectorId)
 result = re.search(r'\((.+?)\)\;',HTML).group(1)
 res = json.loads(result)
