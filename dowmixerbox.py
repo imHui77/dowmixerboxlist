@@ -39,13 +39,9 @@ class mixerbox:
 		return cto.read().decode('utf-8')
 
 mixerbox = mixerbox()
-<<<<<<< HEAD
-# InputUrl = input("請輸入收藏清單網址：")
-# vectorId = mixerbox.getvectorId(InputUrl)
-vectorId = "7742969"
-=======
 InputUrl = input("請輸入收藏清單網址：")
 vectorId = mixerbox.getvectorId(InputUrl)
+# vectorId = "7742969"
 HTML = mixerbox.getHTML(vectorId)
 result = re.search(r'\((.+?)\)\;',HTML).group(1)
 res = json.loads(result)
