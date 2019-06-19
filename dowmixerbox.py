@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*- 
-import urllib.request
+import requests
 import youtube_dl
 import json
 import re
@@ -15,14 +15,13 @@ class mixerbox:
 
 	def dowload(self,item):
 		options = {
-			'verbose': True,
-			'format': 'mp4',
-			'outtmpl': 'C:\\Users\\user\\Downloads\\music\\%(title)s.%(ext)s',
-			'noplaylist' : True,
+            'format': 'bestaudio/best',
+			'outtmpl': 'G:\\GitHub\\Downloads\\music\\%(title)s.%(ext)s',
 			'postprocessors': [{
 				'key': 'FFmpegExtractAudio',
 				'preferredcodec': 'mp3',
-			}],
+                'preferredquality': '192'
+			}]
 		}
 		for x in item:
 			url = "http://www.youtube.com/watch?v="+x["f"]
@@ -35,13 +34,13 @@ class mixerbox:
 			
 
 	def getHTML(self,vectorId):
-		cto = urllib.request.urlopen('http://www.mixerbox.com/service?&callback=jQuery172009174624213601712_1453105380546&appVer=205&funcs=getVector&skip=0&limit=0&locale=zh-tw&mobile=1&type=playlist&vectorId='+vectorId+'&random=8398&_=1453105381259')
-		return cto.read().decode('utf-8')
+		cto = requests.get('http://www.mixerbox.com/service?&callback=jQuery172009174624213601712_1453105380546&appVer=205&funcs=getVector&skip=0&limit=0&locale=zh-tw&mobile=1&type=playlist&vectorId='+vectorId+'&random=8398&_=1453105381259')
+		return cto.text
 
 mixerbox = mixerbox()
-InputUrl = input("請輸入收藏清單網址：")
-vectorId = mixerbox.getvectorId(InputUrl)
-# vectorId = "7742969"
+# InputUrl = input("請輸入收藏清單網址：")
+# vectorId = mixerbox.getvectorId(InputUrl)
+vectorId = "7742969"
 HTML = mixerbox.getHTML(vectorId)
 result = re.search(r'\((.+?)\)\;',HTML).group(1)
 res = json.loads(result)
