@@ -43,10 +43,10 @@ mixerbox = mixerbox()
 # InputUrl = input("請輸入收藏清單網址：")
 # vectorId = mixerbox.getvectorId(InputUrl)
 vectorId = "7742969"
-# HTML = mixerbox.getHTML(vectorId)
-# result = re.search(r'\((.+?)\)\;',HTML).group(1)
-res = listtt.aliist
-# res = json.loads(result)
+HTML = mixerbox.getHTML(vectorId)
+result = re.search(r'\((.+?)\)\;',HTML).group(1)
+# res = listtt.aliist
+res = json.loads(result)
 # print(res)
 item = res["getVector"]["items"]
 mixerbox.dowload(item)
