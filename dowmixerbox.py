@@ -1,19 +1,9 @@
-# -*- coding: UTF-8 -*- 
 import requests
 import youtube_dl
 import json
 import re
-import listtt
 
 class mixerbox:
-	def getvectorId(self, url):
-		try:
-			return re.search(r'http\:\/\/www\.mixerbox\.com\/list\/([0-9]+)', url).group(1)
-			pass
-		except:
-			print("網址輸入錯誤")
-			exit()
-
 	def dowload(self, item):
 		options = {
             'format': 'bestaudio/best',
@@ -38,15 +28,10 @@ class mixerbox:
 		cto = requests.get('http://www.mixerbox.com/service?&callback=jQuery172009174624213601712_1453105380546&appVer=205&funcs=getVector&skip=0&limit=0&locale=zh-tw&mobile=1&type=playlist&vectorId='+vectorId+'&random=8398&_=1453105381259')
 		return cto.text
 
-# print(listtt.aliist)
 mixerbox = mixerbox()
-# InputUrl = input("請輸入收藏清單網址：")
-# vectorId = mixerbox.getvectorId(InputUrl)
-vectorId = "7742969"
+vectorId = "40361693" # 歌單的編碼 https://www.mixerbox.com/user/40361693
 HTML = mixerbox.getHTML(vectorId)
 result = re.search(r'\((.+?)\)\;',HTML).group(1)
-# res = listtt.aliist
 res = json.loads(result)
-# print(res)
 item = res["getVector"]["items"]
 mixerbox.dowload(item)
