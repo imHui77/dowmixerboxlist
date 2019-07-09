@@ -1,12 +1,17 @@
 import requests
 import youtube_dl
-import json
-import re
 import uuid
 
 
 class mixerbox:
     r = requests.session()
+    my_headers = {
+        'Referer': 'https://www.mixerbox.com/user/1234567',
+        'Accept': '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'zh-TW,zh;q=0.8,en-US;q=0.5,en;q=0.3',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0',
+    }
     def dowload(self, item):
         options = {
             'format': 'bestaudio/best',
@@ -19,6 +24,8 @@ class mixerbox:
         }
         for x in item:
             try:
+                if x['type'] != 'music':
+                    continue
                 url = "http://www.youtube.com/watch?v=" + x["f"]
                 with youtube_dl.YoutubeDL(options) as ydl:
                     ydl.download([url])
@@ -27,35 +34,14 @@ class mixerbox:
                 pass
 
     def getHTML(self, vectorId):
-        rrr = 'https://www.mixerbox.com/list/7742969'
-
-        rrr = 'https://www.mixerbox.com/service?func=getVector&locale=zh-tw&type=playlist&uuid=6afdff98-9fa2-4876-b37a-5746b017b256-web&vectorId=7742969'
-        newUuid = str(uuid.uuid4()) + '-web'
-        cookie = {
-            '__cfduid' : "d7cc2481cbb80a715bd6dd743ee1e77af1560955670",
-            'driftt_aid' : "39981c55-9cbd-4194-9586-60c98813e2cd",
-            'DFTT_END_USER_PREV_BOOTSTRAPPED' : "true",
-            'PHPSESSID' : "3tav1m2m1s3sp1agh88622cr23",
-            'uuid' : "6afdff98-9fa2-4876-b37a-5746b017b256-web",
-            'driftt_wmd' : "true",
-            'driftt_sid' : "a8d0249e-10d1-4334-82d8-c167e40203ca"
-        }
-        # self.r.cookies.set(cookie)
-        html = self.r.get(rrr , cookies=cookie)
-        # html2 = self.r.get('https://www.mixerbox.com/service?func=getVector&locale=zh-tw&type=playlist&uuid=6afdff98-9fa2-4876-b37a-5746b017b256-web&vectorId=7742969')
-        # print(html.headers)
-        print(self.r.cookies.get_dict())
-        # print(self.r.text)
-        exit()
-        cto = requests.get(
-            'http://www.mixerbox.com/service?&callback=jQuery172009174624213601712_1453105380546&appVer=205&funcs=getVector&skip=0&limit=0&locale=zh-tw&mobile=1&type=playlist&vectorId=' + vectorId + '&random=8398&_=1453105381259')
-        return cto.text
+        cto = self.r.get('https://www.mixerbox.com/service?func=getVector&locale=zh-tw&type=playlist&uuid=' + str(uuid.uuid4()) + '-web&vectorId=' + vectorId, headers = self.my_headers)
+        # cto = requests.get(
+        #     'http://www.mixerbox.com/service?&callback=jQuery172009174624213601712_1453105380546&appVer=205&funcs=getVector&skip=0&limit=0&locale=zh-tw&mobile=1&type=playlist&vectorId=' + vectorId + '&random=8398&_=1453105381259')
+        return cto.json()
 
 
 mixerbox = mixerbox()
-vectorId = "40361693"  # 歌單的編碼 https://www.mixerbox.com/user/40361693
-HTML = mixerbox.getHTML(vectorId)
-# result = re.search(r'\((.+?)\)\;',HTML).group(1)
-# res = json.loads(result)
-# item = res["getVector"]["items"]
-# mixerbox.dowload(item)
+vectorId = "106086091"  # 歌單的編碼 https://www.mixerbox.com/list/106086091
+result = mixerbox.getHTML(vectorId)
+item = result["getVector"]["items"]
+mixerbox.dowload(item)
