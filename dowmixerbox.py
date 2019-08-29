@@ -41,7 +41,7 @@ class mixerbox:
 
 
 mixerbox = mixerbox()
-vectorId = "106086091"  # 歌單的編碼 https://www.mixerbox.com/list/106086091
+vectorId = "7742969"  # 歌單的編碼 https://www.mixerbox.com/list/7742969
 result = mixerbox.getHTML(vectorId)
 item = result["getVector"]["items"]
 mixerbox.dowload(item)
